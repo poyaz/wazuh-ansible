@@ -108,11 +108,11 @@
       delay: 5
       tags: debug
       when:
-        - hostvars[inventory_hostname]['private_ip'] is not defined or not hostvars[inventory_hostname]['private_ip']
+        - hostvars[inventory_hostname]['private_dns'] is not defined or not hostvars[inventory_hostname]['private_dns']
 
     - name: Wait for Wazuh indexer API (Private IP)
       uri:
-        url: "https://{{ hostvars[inventory_hostname]['private_ip'] if not single_node else indexer_network_host }}:{{ indexer_http_port }}/_cat/health/"
+        url: "https://{{ hostvars[inventory_hostname]['private_dns'] if not single_node else indexer_network_host }}:{{ indexer_http_port }}/_cat/health/"
         user: "admin" # Default Indexer user is always "admin"
         password: "{{ indexer_admin_password }}"
         validate_certs: no
@@ -127,7 +127,7 @@
       delay: 5
       tags: debug
       when:
-        - hostvars[inventory_hostname]['private_ip'] is defined and hostvars[inventory_hostname]['private_ip']
+        - hostvars[inventory_hostname]['private_dns'] is defined and hostvars[inventory_hostname]['private_dns']
 
     - import_tasks: "RMRedHat.yml"
       when: ansible_os_family == "RedHat"
