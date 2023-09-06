@@ -1,14 +1,14 @@
 - name: Configure IP (Private address)
   set_fact:
-    target_address: "{{ hostvars[inventory_hostname]['private_dns'] if not single_node else indexer_network_host }}"
+    target_address: "{{ hostvars[inventory_hostname]['private_ip'] if not single_node else indexer_network_host }}"
   when:
-    - hostvars[inventory_hostname]['private_dns'] is defined
+    - hostvars[inventory_hostname]['private_ip'] is defined
 
 - name: Configure IP (Public address)
   set_fact:
     target_address: "{{ inventory_hostname if not single_node else indexer_network_host }}"
   when:
-    - hostvars[inventory_hostname]['private_dns'] is not defined
+    - hostvars[inventory_hostname]['private_ip'] is not defined
 
 - name: Ensure Indexer certificates directory permissions.
   file:
